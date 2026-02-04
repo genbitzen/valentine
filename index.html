@@ -61,8 +61,7 @@
   let yesScale = 1;
   let noClicks = 0;
 
-  // Make NO button run away
-  noBtn.addEventListener("mouseenter", moveNo);
+  // NO button runs away ONLY when clicked
   noBtn.addEventListener("click", moveNo);
 
   function moveNo() {
@@ -84,7 +83,7 @@
     yesScale += 0.2;
     yesBtn.style.transform = `scale(${yesScale})`;
 
-    // Change text
+    // Change question text
     const messages = [
       "Are you sure? 😳",
       "Come on… 😅",
@@ -93,7 +92,8 @@
       "Just say yes already 💘"
     ];
 
-    question.textContent = messages[Math.min(noClicks - 1, messages.length - 1)];
+    question.textContent =
+      messages[Math.min(noClicks - 1, messages.length - 1)];
   }
 
   // YES button celebration
@@ -132,6 +132,8 @@
   `;
   document.head.appendChild(style);
 </script>
+
+
 
 
 
