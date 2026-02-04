@@ -61,37 +61,5 @@
       <button id="yes">Yes</button>
     </div>
   </div>
-<script>
-  const noBtn = document.getElementById("no");
-  const yesBtn = document.getElementById("yes");
-  const question = document.getElementById("question");
 
-  const hints = [
-    "Hmm… are you sure? 🤔",
-    "Take another look 👀",
-    "Think carefully 😳",
-    "You’re overthinking this 😏",
-    "Okay but… really? 💕"
-  ];
-
-  let noCount = 0;
-
-  noBtn.addEventListener("click", () => {
-    question.textContent = hints[noCount % hints.length];
-    noCount++;
-
-    // Move No button within safe bounds
-    const x = Math.random() * 120 - 60;
-    const y = Math.random() * 40 - 20;
-    noBtn.style.transform = `translate(${x}px, ${y}px)`;
-
-    // Yes slowly becomes unavoidable 😈
-    yesBtn.style.transform = `translateX(-50%) scale(${1 + noCount * 0.15})`;
-  });
-
-  yesBtn.addEventListener("click", () => {
-    question.textContent = "YAY!! 💕 See you on Valentine’s Day 😍";
-    document.querySelector(".buttons").style.display = "none";
-  });
-</script>
 
