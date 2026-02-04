@@ -14,10 +14,10 @@
     }
 
     .container {
-      text-align: center;
-      width: 100%;
-      max-width: 400px;
-    }
+  position: relative;
+  margin-top: 30px;   /* pushes buttons under the text */
+  height: 200px;      /* playground for the No button */
+}
 
     h1 {
       margin-bottom: 30px;
@@ -44,14 +44,14 @@
   background-color: #ff4d6d;
   color: white;
   left: 55%;
-  top: 40px;
+  top: 80px;
   transform: translateX(-50%) scale(1.15);
 }
 
     #no {
   background-color: #ddd;
   left: 45%;
-  top: 40px;
+  top: 80px;
   transform: translateX(-50%) scale(1.15);
 }
   </style>
@@ -144,6 +144,7 @@
   `;
   document.head.appendChild(style);
 </script>
+
 
 
 
