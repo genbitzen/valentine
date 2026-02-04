@@ -31,8 +31,14 @@
     }
 
     button {
-      position: static; /* remove absolute positioning */
-    }
+  font-size: 22px;
+  padding: 18px 42px;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  position: absolute;
+  transition: transform 0.3s ease, left 0.3s ease, top 0.3s ease;
+}
 
     #yes {
       background-color: #ff4d6d;
@@ -132,6 +138,7 @@
   `;
   document.head.appendChild(style);
 </script>
+
 
 
 
