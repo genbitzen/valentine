@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Be my Valentine?</title>
+  <title>Be my Valentine? :")</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -56,47 +56,8 @@
 <body>
   <div class="container">
     <h1 id="question">Will you be my Valentine? 💖</h1>
-    <button id="yes">Yes</button>
-    <button id="no">No</button>
+    <div class="buttons">
+      <button id="no">No</button>
+      <button id="yes">Yes</button>
+    </div>
   </div>
-
-  <script>
-    const noBtn = document.getElementById("no");
-    const yesBtn = document.getElementById("yes");
-    const question = document.getElementById("question");
-
-    const hints = [
-      "Are you sure? 🥺",
-      "Think again 😳",
-      "Last chance 😏",
-      "You know you want to 😘",
-      "Don’t break my heart 💔"
-    ];
-
-    let noCount = 0;
-
-    noBtn.addEventListener("click", () => {
-      question.textContent = hints[noCount % hints.length];
-      noCount++;
-
-      // Move the No button randomly
-      const x = Math.random() * 200 - 100;
-      const y = Math.random() * 200 - 100;
-      noBtn.style.transform = `translate(${x}px, ${y}px)`;
-
-      // Make Yes button slightly bigger
-      const scale = 1 + noCount * 0.1;
-      yesBtn.style.transform = `scale(${scale})`;
-    });
-
-    yesBtn.addEventListener("click", () => {
-      question.textContent = "YAY!! 💕 See you on Valentine’s Day 😍";
-      noBtn.style.display = "none";
-      yesBtn.style.display = "none";
-    });
-  </script>
-</body>
-</html>
-
-
-
