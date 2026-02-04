@@ -52,6 +52,21 @@
       <button id="yes">Yes</button>
     </div>
   </div>
+</body>
+<script>
+  const yesBtn = document.getElementById("yes");
+  const noBtn = document.getElementById("no");
+  const question = document.getElementById("question");
+
+  yesBtn.addEventListener("click", () => {
+    question.textContent = "Yay!! 💘 I knew it!";
+  });
+
+  noBtn.addEventListener("click", () => {
+    question.textContent = "Wait… try again 😏";
+  });
+</script>
+
 
 
 
