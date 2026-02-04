@@ -58,14 +58,82 @@
   const noBtn = document.getElementById("no");
   const question = document.getElementById("question");
 
+  let yesScale = 1;
+  let noClicks = 0;
+
+  // Make NO button run away
+  noBtn.addEventListener("mouseenter", moveNo);
+  noBtn.addEventListener("click", moveNo);
+
+  function moveNo() {
+    noClicks++;
+
+    const container = document.querySelector(".buttons");
+    const containerRect = container.getBoundingClientRect();
+
+    const maxX = containerRect.width - noBtn.offsetWidth;
+    const maxY = containerRect.height - noBtn.offsetHeight;
+
+    const randomX = Math.random() * maxX;
+    const randomY = Math.random() * maxY;
+
+    noBtn.style.left = `${randomX}px`;
+    noBtn.style.top = `${randomY}px`;
+
+    // Grow YES button
+    yesScale += 0.2;
+    yesBtn.style.transform = `scale(${yesScale})`;
+
+    // Change text
+    const messages = [
+      "Are you sure? 😳",
+      "Come on… 😅",
+      "Don't break my heart 💔",
+      "This is getting awkward 😭",
+      "Just say yes already 💘"
+    ];
+
+    question.textContent = messages[Math.min(noClicks - 1, messages.length - 1)];
+  }
+
+  // YES button celebration
   yesBtn.addEventListener("click", () => {
-    question.textContent = "Yay!! 💘 I knew it!";
+    question.textContent = "YAY!! 💖 I knew it!!!";
+    noBtn.style.display = "none";
+    yesBtn.style.transform = "scale(1.5)";
+    launchHearts();
   });
 
-  noBtn.addEventListener("click", () => {
-    question.textContent = "Wait… try again 😏";
-  });
+  // Floating hearts effect
+  function launchHearts() {
+    for (let i = 0; i < 20; i++) {
+      const heart = document.createElement("div");
+      heart.textContent = "💖";
+      heart.style.position = "fixed";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.bottom = "-20px";
+      heart.style.fontSize = "24px";
+      heart.style.animation = "floatUp 3s ease forwards";
+      document.body.appendChild(heart);
+
+      setTimeout(() => heart.remove(), 3000);
+    }
+  }
+
+  // Inject animation CSS
+  const style = document.createElement("style");
+  style.innerHTML = `
+    @keyframes floatUp {
+      to {
+        transform: translateY(-100vh);
+        opacity: 0;
+      }
+    }
+  `;
+  document.head.appendChild(style);
 </script>
+
+
 
 
 
