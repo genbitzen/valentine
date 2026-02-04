@@ -30,29 +30,28 @@
   gap: 20px;
     }
 
-    button {
+  button {
   font-size: 22px;
   padding: 18px 42px;
   border: none;
   border-radius: 14px;
   cursor: pointer;
-  position: absolute;
-  transition: transform 0.3s ease, left 0.3s ease, top 0.3s ease;
+  transition: transform 0.3s ease;
+  position: relative;      /* normal flow for side-by-side display */
 }
 
-    #yes {
+/* YES button starts normally */
+#yes {
   background-color: #ff4d6d;
   color: white;
-  left: 55%;
-  top: 80px;
-  transform: translateX(-50%) scale(1.15);
+  transform: scale(1.15);
 }
 
-    #no {
+/* NO button starts normally */
+#no {
   background-color: #ddd;
-  left: 45%;
-  top: 80px;
-  transform: translateX(-50%) scale(1.15);
+  color: black;
+  transform: scale(1.15);
 }
   </style>
 </head>
@@ -144,6 +143,7 @@
   `;
   document.head.appendChild(style);
 </script>
+
 
 
 
