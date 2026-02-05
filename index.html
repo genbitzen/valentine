@@ -29,14 +29,13 @@
     }
 
     /* Button layout */
-    .playground {
-      display: grid;
-      grid-template-columns: auto auto;
-      justify-content: center;
-      align-items: center;
-      column-gap: 32px;
-      height: 170px;
-    }
+.playground {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 32px; /* space between Yes and No */
+  height: 170px;
+}
 
     /* YES slot */
     .yes-slot {
@@ -50,7 +49,8 @@
   width: 220px;
   height: 120px;
   display: flex;
-  align-items: center;   /* <-- aligns starting row */
+  justify-content: center; /* center initially */
+  align-items: center;     /* vertical center */
 }
 
 
@@ -70,8 +70,6 @@
       background-color: #ff4d6d;
       color: white;
       box-shadow: 0 6px 16px rgba(255, 77, 109, 0.35);
-      left: 10;
-      top: 20;
     }
 
 #no {
@@ -244,6 +242,7 @@
   </script>
 </body>
 </html>
+
 
 
 
