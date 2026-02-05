@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Valentine Invitation</title>
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -11,148 +12,177 @@
       justify-content: center;
       align-items: center;
       background: #ffe6eb;
+      overflow: hidden;
     }
 
     .container {
-  position: relative;
-  margin-top: 30px;   /* pushes buttons under the text */
-  height: 200px;      /* playground for the No button */
-}
+      text-align: center;
+      width: 360px;
+    }
 
     h1 {
       margin-bottom: 30px;
-      min-height: 60px; /* prevents jumping */
+      min-height: 70px;
     }
 
-    .buttons {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
+    /* Playground for buttons */
+    .playground {
+      position: relative;
+      height: 140px;
     }
 
-  button {
-  font-size: 22px;
-  padding: 18px 42px;
-  border: none;
-  border-radius: 14px;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-  position: relative;      /* normal flow for side-by-side display */
-}
+    #yes {
+      background-color: #ff4d6d;
+      color: white;
+      font-size: 22px;
+      padding: 18px 42px;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      transform: scale(1.15);
+    }
 
-/* YES button starts normally */
-#yes {
-  background-color: #ff4d6d;
-  color: white;
-  transform: scale(1.15);
-}
+    #no {
+      position: absolute;
+      left: 0;
+      top: 60px;
+      background-color: #ddd;
+      color: black;
+      font-size: 22px;
+      padding: 18px 42px;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      transform: scale(1.15);
+    }
 
-/* NO button starts normally */
-#no {
-  background-color: #ddd;
-  color: black;
-  transform: scale(1.15);
-}
+    /* Loading bar */
+    .loader {
+      display: none;
+      margin-top: 30px;
+    }
+
+    .bar {
+      width: 100%;
+      height: 20px;
+      background: #ffd1dc;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      width: 0%;
+      height: 100%;
+      background: #ff4d6d;
+      transition: width 2s ease;
+    }
+
+    .loader p {
+      margin-top: 10px;
+      font-weight: bold;
+    }
   </style>
 </head>
+
 <body>
   <div class="container">
     <h1 id="question">Will you be my Valentine? 💖</h1>
-    <div class="buttons">
-      <button id="no">No</button>
+
+    <div class="playground" id="playground">
       <button id="yes">Yes</button>
+      <button id="no">No</button>
+    </div>
+
+    <div class="loader" id="loader">
+      <div class="bar">
+        <div class="bar-fill" id="barFill"></div>
+      </div>
+      <p>Loading love… 💕</p>
     </div>
   </div>
-</body>
-<script>
-  const yesBtn = document.getElementById("yes");
-  const noBtn = document.getElementById("no");
-  const question = document.getElementById("question");
 
-  let yesScale = 1;
-  let noClicks = 0;
+  <script>
+    const yesBtn = document.getElementById("yes");
+    const noBtn = document.getElementById("no");
+    const question = document.getElementById("question");
+    const playground = document.getElementById("playground");
+    const loader = document.getElementById("loader");
+    const barFill = document.getElementById("barFill");
 
-  // NO button runs away ONLY when clicked
-  noBtn.addEventListener("click", moveNo);
+    let yesScale = 1;
+    let noClicks = 0;
 
-  function moveNo() {
-    noClicks++;
+    noBtn.addEventListener("click", moveNo);
 
-    const container = document.querySelector(".buttons");
-    const containerRect = container.getBoundingClientRect();
+    function moveNo() {
+      noClicks++;
 
-    const maxX = containerRect.width - noBtn.offsetWidth;
-    const maxY = containerRect.height - noBtn.offsetHeight;
+      const rect = playground.getBoundingClientRect();
 
-    const randomX = Math.random() * maxX;
-    const randomY = Math.random() * maxY;
+      const maxX = rect.width - noBtn.offsetWidth;
+      const maxY = rect.height - noBtn.offsetHeight;
 
-    noBtn.style.left = `${randomX}px`;
-    noBtn.style.top = `${randomY}px`;
+      const randomX = Math.random() * maxX;
+      const randomY = Math.random() * maxY;
 
-    // Grow YES button
-    yesScale += 0.2;
-    yesBtn.style.transform = `scale(${yesScale})`;
+      noBtn.style.left = `${randomX}px`;
+      noBtn.style.top = `${randomY}px`;
 
-    // Change question text
-    const messages = [
-      "Are you sure? 😳",
-      "Come on… 😅",
-      "Don't break my heart 💔",
-      "This is getting awkward 😭",
-      "Just say yes already 💘"
-    ];
+      yesScale += 0.2;
+      yesBtn.style.transform = `scale(${yesScale})`;
 
-    question.textContent =
-      messages[Math.min(noClicks - 1, messages.length - 1)];
-  }
+      const messages = [
+        "Are you sure? 😳",
+        "Come on… 😅",
+        "Don't break my heart 💔",
+        "This is getting awkward 😭",
+        "Just say yes already 💘"
+      ];
 
-  // YES button celebration
-  yesBtn.addEventListener("click", () => {
-    question.textContent = "YAY!! 💖 I knew it!!!";
-    noBtn.style.display = "none";
-    yesBtn.style.transform = "scale(1.5)";
-    launchHearts();
-  });
-
-  // Floating hearts effect
-  function launchHearts() {
-    for (let i = 0; i < 20; i++) {
-      const heart = document.createElement("div");
-      heart.textContent = "💖";
-      heart.style.position = "fixed";
-      heart.style.left = Math.random() * 100 + "vw";
-      heart.style.bottom = "-20px";
-      heart.style.fontSize = "24px";
-      heart.style.animation = "floatUp 3s ease forwards";
-      document.body.appendChild(heart);
-
-      setTimeout(() => heart.remove(), 3000);
+      question.textContent =
+        messages[Math.min(noClicks - 1, messages.length - 1)];
     }
-  }
 
-  // Inject animation CSS
-  const style = document.createElement("style");
-  style.innerHTML = `
-    @keyframes floatUp {
-      to {
-        transform: translateY(-100vh);
-        opacity: 0;
+    yesBtn.addEventListener("click", () => {
+      question.textContent = "YAY!! 💖 I knew it!!!";
+      playground.style.display = "none";
+      loader.style.display = "block";
+
+      setTimeout(() => {
+        barFill.style.width = "100%";
+      }, 100);
+
+      setTimeout(() => {
+        loader.style.display = "none";
+        launchHearts();
+      }, 2300);
+    });
+
+    function launchHearts() {
+      for (let i = 0; i < 40; i++) {
+        const heart = document.createElement("div");
+        heart.textContent = "💖";
+        heart.style.position = "fixed";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.bottom = "-30px";
+        heart.style.fontSize = 16 + Math.random() * 24 + "px";
+        heart.style.animation = `floatUp ${2 + Math.random() * 2}s ease forwards`;
+        document.body.appendChild(heart);
+
+        setTimeout(() => heart.remove(), 4000);
       }
     }
-  `;
-  document.head.appendChild(style);
-</script>
 
-
-
-
-
-
-
-
-
-
-
-
-
+    const style = document.createElement("style");
+    style.innerHTML = `
+      @keyframes floatUp {
+        to {
+          transform: translateY(-110vh);
+          opacity: 0;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+</body>
+</html>
