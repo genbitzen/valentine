@@ -27,47 +27,38 @@
 
     /* Playground for buttons */
     .playground {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: center;
-  height: 140px;
-  position: relative;
-  column-gap: 40px;
-}
-    .yes-slot {
-  position: relative;
-  z-index: 2;
-}
+      position: relative;
+      height: 140px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+    }
+
     #yes {
-  background-color: #ff4d6d;
-  color: white;
-  font-size: 22px;
-  padding: 18px 42px;
-  border: none;
-  border-radius: 14px;
-  cursor: pointer;
-  transform: scale(1.15);
-  transform-origin: center;
-}
-    .no-zone {
-  position: relative;
-  width: 220px;
-  height: 120px;
-}
+      background-color: #ff4d6d;
+      color: white;
+      font-size: 22px;
+      padding: 18px 42px;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      transform: scale(1.15);
+      z-index: 2;
+    }
 
     /* No starts NORMAL */
     #no {
-  position: absolute;
-  left: 0;
-  top: 40px;
-  background-color: #ddd;
-  color: black;
-  font-size: 22px;
-  padding: 18px 42px;
-  border: none;
-  border-radius: 14px;
-  cursor: pointer;
-}
+      position: relative;
+      background-color: #ddd;
+      color: black;
+      font-size: 22px;
+      padding: 18px 42px;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      transform: scale(1.15);
+    }
 
     /* Loading bar */
     .loader {
@@ -101,15 +92,10 @@
   <div class="container">
     <h1 id="question">Will you be my Valentine? 💖</h1>
 
-<div class="playground">
-  <div class="yes-slot">
-    <button id="yes">Yes</button>
-  </div>
-
-  <div class="no-zone" id="noZone">
-    <button id="no">No</button>
-  </div>
-</div>
+    <div class="playground" id="playground">
+      <button id="yes">Yes</button>
+      <button id="no">No</button>
+    </div>
 
     <div class="loader" id="loader">
       <div class="bar">
@@ -126,40 +112,48 @@
     const playground = document.getElementById("playground");
     const loader = document.getElementById("loader");
     const barFill = document.getElementById("barFill");
-    const noZone = document.getElementById("noZone");
-    
+
     let yesScale = 1;
     let noClicks = 0;
 
     noBtn.addEventListener("click", moveNo);
 
-function moveNo() {
-  noClicks++;
+    function moveNo() {
+      noClicks++;
 
-  const maxX = noZone.clientWidth - noBtn.offsetWidth;
-  const maxY = noZone.clientHeight - noBtn.offsetHeight;
+      // Switch to absolute ONLY after first click
+      if (noBtn.style.position !== "absolute") {
+        const rect = noBtn.getBoundingClientRect();
+        const parentRect = playground.getBoundingClientRect();
 
-  const randomX = Math.random() * maxX;
-  const randomY = Math.random() * maxY;
+        noBtn.style.position = "absolute";
+        noBtn.style.left = rect.left - parentRect.left + "px";
+        noBtn.style.top = rect.top - parentRect.top + "px";
+      }
 
-  noBtn.style.left = `${randomX}px`;
-  noBtn.style.top = `${randomY}px`;
+      const maxX = playground.clientWidth - noBtn.offsetWidth;
+      const maxY = playground.clientHeight - noBtn.offsetHeight;
 
-  yesScale += 0.2;
-  yesBtn.style.transform = `scale(${yesScale})`;
+      const randomX = Math.random() * maxX;
+      const randomY = Math.random() * maxY;
 
-  const messages = [
-    "Are you sure? 😳",
-    "Come on… 😅",
-    "Don't break my heart 💔",
-    "This is getting awkward 😭",
-    "Just say yes already 💘"
-  ];
+      noBtn.style.left = `${randomX}px`;
+      noBtn.style.top = `${randomY}px`;
 
-  question.textContent =
-    messages[Math.min(noClicks - 1, messages.length - 1)];
-}
+      yesScale += 0.2;
+      yesBtn.style.transform = `scale(${yesScale})`;
 
+      const messages = [
+        "Are you sure? 😳",
+        "Come on… 😅",
+        "Don't break my heart 💔",
+        "This is getting awkward 😭",
+        "Just say yes already 💘"
+      ];
+
+      question.textContent =
+        messages[Math.min(noClicks - 1, messages.length - 1)];
+    }
 
     yesBtn.addEventListener("click", () => {
       question.textContent = "YAY!! 💖 I knew it!!!";
@@ -204,4 +198,3 @@ function moveNo() {
   </script>
 </body>
 </html>
-
