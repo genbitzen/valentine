@@ -24,7 +24,7 @@
     }
 
     h1 {
-      margin-bottom: 30px;
+      margin-bottom: 24px;
       min-height: 70px;
     }
 
@@ -45,11 +45,14 @@
     }
 
     /* NO playground */
-    .no-zone {
-      position: relative;
-      width: 220px;
-      height: 120px;
-    }
+.no-zone {
+  position: relative;
+  width: 220px;
+  height: 120px;
+  display: flex;
+  align-items: center;   /* <-- aligns starting row */
+}
+
 
     /* Buttons (same base size) */
     #yes,
@@ -66,15 +69,23 @@
     #yes {
       background-color: #ff4d6d;
       color: white;
+      box-shadow: 0 6px 16px rgba(255, 77, 109, 0.35);
     }
 
-    #no {
-      position: absolute;
-      left: 0;
-      top: 40px;
-      background-color: #ddd;
-      color: black;
-    }
+#no {
+  position: absolute;
+  left: 0;
+  top: 0;              /* <-- key fix */
+  background-color: #ddd;
+  color: black;
+  font-size: 22px;
+  padding: 18px 42px;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  transform: scale(1.15);
+}
+
 
     /* Loader */
     .loader {
@@ -231,3 +242,4 @@
   </script>
 </body>
 </html>
+
