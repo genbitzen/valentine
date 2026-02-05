@@ -29,6 +29,10 @@
     .playground {
       position: relative;
       height: 140px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
     }
 
     #yes {
@@ -40,12 +44,12 @@
       border-radius: 14px;
       cursor: pointer;
       transform: scale(1.15);
+      z-index: 2;
     }
 
+    /* No starts NORMAL */
     #no {
-      position: absolute;
-      left: 0;
-      top: 60px;
+      position: relative;
       background-color: #ddd;
       color: black;
       font-size: 22px;
@@ -117,10 +121,18 @@
     function moveNo() {
       noClicks++;
 
-      const rect = playground.getBoundingClientRect();
+      // Switch to absolute ONLY after first click
+      if (noBtn.style.position !== "absolute") {
+        const rect = noBtn.getBoundingClientRect();
+        const parentRect = playground.getBoundingClientRect();
 
-      const maxX = rect.width - noBtn.offsetWidth;
-      const maxY = rect.height - noBtn.offsetHeight;
+        noBtn.style.position = "absolute";
+        noBtn.style.left = rect.left - parentRect.left + "px";
+        noBtn.style.top = rect.top - parentRect.top + "px";
+      }
+
+      const maxX = playground.clientWidth - noBtn.offsetWidth;
+      const maxY = playground.clientHeight - noBtn.offsetHeight;
 
       const randomX = Math.random() * maxX;
       const randomY = Math.random() * maxY;
