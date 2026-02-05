@@ -134,6 +134,32 @@
         height: 140px;
       }
     }
+    /* Floating cats */
+@keyframes floatCat {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+}
+
+/* Floating mini emojis for "No" clicks */
+@keyframes popEmoji {
+  0% { transform: translateY(0) scale(0); opacity: 1; }
+  50% { transform: translateY(-20px) scale(1.2); }
+  100% { transform: translateY(-50px) scale(0.8); opacity: 0; }
+}
+
+/* Typing effect for text */
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+#question.typed {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 2px solid #ff4d6d;
+  animation: typing 1s steps(30) forwards;
+}
   </style>
 </head>
 
@@ -160,88 +186,137 @@
   </div>
 
   <script>
-    const yesBtn = document.getElementById("yes");
-    const noBtn = document.getElementById("no");
-    const noZone = document.getElementById("noZone");
-    const question = document.getElementById("question");
-    const loader = document.getElementById("loader");
-    const barFill = document.getElementById("barFill");
+const yesBtn = document.getElementById("yes");
+const noBtn = document.getElementById("no");
+const noZone = document.getElementById("noZone");
+const question = document.getElementById("question");
+const loader = document.getElementById("loader");
+const barFill = document.getElementById("barFill");
 
-    let yesScale = 1.15;
-    let noClicks = 0;
+let yesScale = 1.15;
+let noClicks = 0;
 
-    noBtn.addEventListener("click", moveNo);
+// GIFs and emojis
+const catGIFs = [
+  "https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif",
+  "https://media.giphy.com/media/mlvseq9yvZhba/giphy.gif",
+  "https://media.giphy.com/media/12PA1eI8FBqEBa/giphy.gif"
+];
+const teasingEmojis = ["😼","🙀","😹","😽","😻"];
 
-    function moveNo() {
-      noClicks++;
+noBtn.addEventListener("click", moveNo);
 
-      const maxX = noZone.clientWidth - noBtn.offsetWidth;
-      const maxY = noZone.clientHeight - noBtn.offsetHeight;
+function moveNo() {
+  noClicks++;
 
-      const randomX = Math.random() * maxX;
-      const randomY = Math.random() * (maxY * 0.6);
+  const maxX = noZone.clientWidth - noBtn.offsetWidth;
+  const maxY = noZone.clientHeight - noBtn.offsetHeight;
 
-      noBtn.style.left = `${randomX}px`;
-      noBtn.style.top = `${randomY}px`;
+  const randomX = Math.random() * maxX;
+  const randomY = Math.random() * (maxY * 0.6);
 
-      yesScale += 0.2;
-      yesBtn.style.transform = `scale(${yesScale})`;
+  noBtn.style.left = `${randomX}px`;
+  noBtn.style.top = `${randomY}px`;
 
-      const messages = [
-        "Are you sure? 😳",
-        "Come on… 😅",
-        "Don't break my heart 💔",
-        "This is getting awkward 😭",
-        "Just say yes already 💘"
-      ];
+  yesScale += 0.2;
+  yesBtn.style.transform = `scale(${yesScale})`;
 
-      question.textContent =
-        messages[Math.min(noClicks - 1, messages.length - 1)];
+  const messages = [
+    "Are you sure? 😳",
+    "Come on… 😅",
+    "Don't break my heart 💔",
+    "This is getting awkward 😭",
+    "Just say yes already 💘"
+  ];
+
+  question.textContent =
+    messages[Math.min(noClicks - 1, messages.length - 1)];
+
+  // spawn teasing emoji
+  const emoji = document.createElement("div");
+  emoji.textContent = teasingEmojis[Math.floor(Math.random()*teasingEmojis.length)];
+  emoji.style.position = "fixed";
+  emoji.style.left = noBtn.getBoundingClientRect().left + "px";
+  emoji.style.top = noBtn.getBoundingClientRect().top + "px";
+  emoji.style.fontSize = 24 + Math.random()*12 + "px";
+  emoji.style.animation = `popEmoji 0.8s ease forwards`;
+  document.body.appendChild(emoji);
+  setTimeout(() => emoji.remove(), 800);
+}
+
+yesBtn.addEventListener("click", () => {
+  document.querySelector(".playground").style.display = "none";
+  loader.style.display = "block";
+
+  setTimeout(() => barFill.style.width = "100%", 100);
+
+  setTimeout(() => {
+    loader.style.display = "none";
+    showFinalMessage("YAY!! 💖 I knew it!!!");
+    launchHearts();
+    launchCats();
+  }, 2300);
+});
+
+// Show final message with typing effect
+function showFinalMessage(text) {
+  question.textContent = "";
+  question.classList.add("typed");
+  let i = 0;
+  const interval = setInterval(() => {
+    question.textContent += text[i];
+    i++;
+    if (i >= text.length) clearInterval(interval);
+  }, 50);
+}
+
+// Hearts floating
+function launchHearts() {
+  for (let i = 0; i < 40; i++) {
+    const heart = document.createElement("div");
+    heart.textContent = "💖";
+    heart.style.position = "fixed";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.bottom = "-30px";
+    heart.style.fontSize = 16 + Math.random() * 24 + "px";
+    heart.style.animation = `floatUp ${2 + Math.random() * 2}s ease forwards`;
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 4000);
+  }
+}
+
+// Floating Exotic Shorthair GIFs
+function launchCats() {
+  for (let i = 0; i < 8; i++) {
+    const cat = document.createElement("img");
+    cat.src = catGIFs[Math.floor(Math.random() * catGIFs.length)];
+    cat.style.position = "fixed";
+    cat.style.left = Math.random() * 90 + "vw";
+    cat.style.bottom = "-100px";
+    cat.style.width = 60 + Math.random() * 50 + "px";
+    cat.style.borderRadius = "12px";
+    cat.style.animation = `floatCat ${3 + Math.random() * 2}s ease forwards`;
+    document.body.appendChild(cat);
+    setTimeout(() => cat.remove(), 5000);
+  }
+}
+
+// Existing heart animation style
+const style = document.createElement("style");
+style.innerHTML = `
+  @keyframes floatUp {
+    to {
+      transform: translateY(-110vh);
+      opacity: 0;
     }
+  }
+`;
+document.head.appendChild(style);
 
-    yesBtn.addEventListener("click", () => {
-      question.textContent = "YAY!! 💖 Congrats on another year of subscription!!";
-      document.querySelector(".playground").style.display = "none";
-      loader.style.display = "block";
-
-      setTimeout(() => {
-        barFill.style.width = "100%";
-      }, 100);
-
-      setTimeout(() => {
-        loader.style.display = "none";
-        launchHearts();
-      }, 2300);
-    });
-
-    function launchHearts() {
-      for (let i = 0; i < 40; i++) {
-        const heart = document.createElement("div");
-        heart.textContent = "💖";
-        heart.style.position = "fixed";
-        heart.style.left = Math.random() * 100 + "vw";
-        heart.style.bottom = "-30px";
-        heart.style.fontSize = 16 + Math.random() * 24 + "px";
-        heart.style.animation = `floatUp ${2 + Math.random() * 2}s ease forwards`;
-        document.body.appendChild(heart);
-
-        setTimeout(() => heart.remove(), 4000);
-      }
-    }
-
-    const style = document.createElement("style");
-    style.innerHTML = `
-      @keyframes floatUp {
-        to {
-          transform: translateY(-110vh);
-          opacity: 0;
-        }
-      }
-    `;
-    document.head.appendChild(style);
   </script>
 </body>
 </html>
+
 
 
 
