@@ -19,7 +19,7 @@
 
     .container {
       text-align: center;
-      width: 360px;
+      width: 480px;
       max-width: 92%;
     }
 
@@ -28,31 +28,20 @@
       min-height: 70px;
     }
 
-    /* Layout */
+    /* Button layout */
     .playground {
       display: grid;
-      grid-template-columns: auto 1fr;
-      column-gap: 40px;
+      grid-template-columns: auto auto;
+      justify-content: center;
       align-items: center;
-      height: 160px;
+      column-gap: 32px;
+      height: 170px;
     }
 
-    /* YES is frozen */
+    /* YES slot */
     .yes-slot {
       position: relative;
       z-index: 2;
-    }
-
-    #yes {
-      background-color: #ff4d6d;
-      color: white;
-      font-size: 22px;
-      padding: 18px 42px;
-      border: none;
-      border-radius: 14px;
-      cursor: pointer;
-      transform: scale(1.15);
-      transform-origin: center;
     }
 
     /* NO playground */
@@ -62,17 +51,29 @@
       height: 120px;
     }
 
+    /* Buttons (same base size) */
+    #yes,
+    #no {
+      font-size: 22px;
+      padding: 18px 42px;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      transform: scale(1.15);
+      transform-origin: center;
+    }
+
+    #yes {
+      background-color: #ff4d6d;
+      color: white;
+    }
+
     #no {
       position: absolute;
       left: 0;
       top: 40px;
       background-color: #ddd;
       color: black;
-      font-size: 22px;
-      padding: 18px 42px;
-      border: none;
-      border-radius: 14px;
-      cursor: pointer;
     }
 
     /* Loader */
@@ -101,7 +102,7 @@
       font-weight: bold;
     }
 
-    /* Mobile tweaks */
+    /* Mobile */
     @media (max-width: 480px) {
       h1 {
         font-size: 22px;
@@ -127,7 +128,7 @@
 
 <body>
   <div class="container">
-    <h1 id="question">Baby Princess Fluffy Angel, Will you be my Valentine? 💖</h1>
+    <h1 id="question">Baby Princess Fluff Angel, Will you be my Valentine? 💖</h1>
 
     <div class="playground">
       <div class="yes-slot">
@@ -155,7 +156,7 @@
     const loader = document.getElementById("loader");
     const barFill = document.getElementById("barFill");
 
-    let yesScale = 1;
+    let yesScale = 1.15;
     let noClicks = 0;
 
     noBtn.addEventListener("click", moveNo);
@@ -167,15 +168,13 @@
       const maxY = noZone.clientHeight - noBtn.offsetHeight;
 
       const randomX = Math.random() * maxX;
-      const randomY = Math.random() * (maxY * 0.6); // mobile-friendly
+      const randomY = Math.random() * (maxY * 0.6);
 
       noBtn.style.left = `${randomX}px`;
       noBtn.style.top = `${randomY}px`;
 
       yesScale += 0.2;
       yesBtn.style.transform = `scale(${yesScale})`;
-
-      if (navigator.vibrate) navigator.vibrate(25);
 
       const messages = [
         "Are you sure? 😳",
@@ -202,8 +201,6 @@
         loader.style.display = "none";
         launchHearts();
       }, 2300);
-
-      if (navigator.vibrate) navigator.vibrate([50, 30, 50]);
     });
 
     function launchHearts() {
